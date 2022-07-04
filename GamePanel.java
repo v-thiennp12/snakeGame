@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener {
@@ -22,7 +23,7 @@ public class GamePanel extends JPanel implements ActionListener {
     int applesEaten;
     int appleX;
     int appleY;
-    char direction                      = 'R';
+    char direction                      = 'P'; // P pause, U D R L up down right left
     boolean running                     = false;
     Timer timer;
     Random random;
@@ -39,6 +40,18 @@ public class GamePanel extends JPanel implements ActionListener {
         newApple();
         running = true;
         timer   = new Timer(DELAY, this);
+        timer.start();
+    }
+
+    public void resetGame() {
+        newApple();
+        Arrays.fill(x, 0);
+        Arrays.fill(y, 0);
+        bodyParts                           = 6;
+        applesEaten                         = 0;
+        direction                           = 'P';
+
+        running = true;
         timer.start();
     }
 
@@ -91,9 +104,11 @@ public class GamePanel extends JPanel implements ActionListener {
         appleY = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
     }
     public void move() {
-        for (int i = bodyParts - 1; i > 0 ; i--) {
-            x[i] = x[i - 1];
-            y[i] = y[i - 1];
+        if (direction != 'P') {
+            for (int i = bodyParts - 1; i > 0; i--) {
+                x[i] = x[i - 1];
+                y[i] = y[i - 1];
+            }
         }
 
         switch(direction) {
@@ -163,7 +178,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (running) {
+        if ((running) && (direction != 'P')){
             checkApple();
             move();
             checkCollisions();
@@ -194,6 +209,14 @@ public class GamePanel extends JPanel implements ActionListener {
                         direction = 'U';
                     }
                     break;
+                case KeyEvent.VK_ESCAPE:
+                    System.exit(0);
+                    break;
+                case KeyEvent.VK_ENTER:
+                    resetGame();
+                    break;
+                default:
+                    direction = 'P';
             }
         }
     }
