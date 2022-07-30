@@ -1,6 +1,6 @@
 # snakeGame
 snakeGame in Java  
-Get fun and creat yourself the legendary snakeGame with Java.
+Get fun and create yourself the legendary snakeGame with Java.
 
 # tutorial by Brocode
 https://www.youtube.com/watch?v=bI6e6qjJ8JQ  
